@@ -30,17 +30,22 @@ $(document).ready(function() {
   getToken();
 
   // Add token to local storage for quick retrieval
-  var accessToken = localStorage.getItem("accessToken");
-  var tokenExpiry = localStorage.getItem("tokenExpires");
-  var petRequestOptions = {
-      method: "GET",
-      headers: {
-        "Authorization": "Bearer " + accessToken,
-      }
+
+  var setPetRequestOptions = function() {
+    var accessToken = localStorage.getItem("accessToken");
+    var petRequestOptions = {
+        method: "GET",
+        headers: {
+          "Authorization": "Bearer " + accessToken,
+        }
+    }
+    return petRequestOptions;
   }
+
 
   // Check if token is expired and fetch new one, if so
   var checkTokenExpiration = function() {
+    var tokenExpiry = localStorage.getItem("tokenExpires");
     if (tokenExpiry < currentUnixTimestamp) {
       getToken();
     };
@@ -138,7 +143,7 @@ $(document).ready(function() {
     checkTokenExpiration();
     $("#locationError").text("");
 
-    fetch(setRequestURL(), petRequestOptions)
+    fetch(setRequestURL(), setPetRequestOptions())
       .then(function(response) {
         return response.json();
       })
