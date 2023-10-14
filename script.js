@@ -29,8 +29,7 @@ $(document).ready(function() {
   
   getToken();
 
-  // Add token to local storage for quick retrieval
-
+  // Set options for fetch request and return value for it
   var setPetRequestOptions = function() {
     var accessToken = localStorage.getItem("accessToken");
     var petRequestOptions = {
