@@ -83,10 +83,7 @@ $(document).ready(function() {
       searchParams.append("age", ageParam);
     };
 
-    if (locationInputEl.val() === "") {
-      $("#locationError").text("Please enter a location.");
-      return
-    } else {
+    if (locationInputEl.val() !== "") {
       var locationParam = locationInputEl.val();
       searchParams.append("location", locationParam);
     }
@@ -139,6 +136,7 @@ $(document).ready(function() {
   // Fetch search results from PetFinder API and log to console for viewing full data
   var getPetResults = function() {
     checkTokenExpiration();
+    $("#locationError").text("");
 
     fetch(setRequestURL(), petRequestOptions)
       .then(function(response) {
@@ -154,6 +152,10 @@ $(document).ready(function() {
   // Set event listener for search button
   $("#searchBtn").on("click", function(event) {
     event.preventDefault();
+    if ($("#locationInput").val() === "") {
+      $("#locationError").text("Please enter a location.");
+      return
+    };
     $("#petsResults").html("");
     getPetResults();
   });
