@@ -11,7 +11,7 @@ $(document).ready(function() {
   };
   var petRequestURL = "https://api.petfinder.com/v2/animals";
 
-  // Retrieve PetFinder API Token and set interval to retrieve another when expired
+  // Retrieve PetFinder API Token and set timeout to retrieve another when expired
   var getToken = function() {
     var fetchToken = fetch(petTokenURL, petTokenOptions)
       .then(function(response) {
@@ -30,7 +30,6 @@ $(document).ready(function() {
   
   getToken();
 
-
   // Set options for fetch request and return value for it
   var setPetRequestOptions = function() {
     var accessToken = localStorage.getItem("accessToken");
@@ -42,7 +41,6 @@ $(document).ready(function() {
     }
     return petRequestOptions;
   }
-
 
   // Set parameters for search with input from form and return fetch request URL
   var setRequestURL = function() {
