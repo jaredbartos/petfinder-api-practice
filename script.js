@@ -10,9 +10,8 @@ $(document).ready(function() {
     body: "grant_type=client_credentials&client_id=" + petAPIKey + "&client_secret=" + petSecret
   };
   var petRequestURL = "https://api.petfinder.com/v2/animals";
-  var currentUnixTimestamp = dayjs().unix();
 
-  // Retrieve PetFinder API Token
+  // Retrieve PetFinder API Token and set interval to retrieve another when expired
   var getToken = function() {
     fetch(petTokenURL, petTokenOptions)
       .then(function(response) {
@@ -20,10 +19,8 @@ $(document).ready(function() {
       })
       .then(function(data) {
         var expireTime = data.expires_in;
-        var currentUnixTimestamp = dayjs().unix();
-        var tokenExpireDate = currentUnixTimestamp + expireTime;
         localStorage.setItem("accessToken", data.access_token);
-        localStorage.setItem("tokenExpires", tokenExpireDate);
+        setTimeout(getToken(), expireTime * 1000);
       })
   }
   
@@ -41,14 +38,6 @@ $(document).ready(function() {
     return petRequestOptions;
   }
 
-
-  // Check if token is expired and fetch new one, if so
-  var checkTokenExpiration = function() {
-    var tokenExpiry = localStorage.getItem("tokenExpires");
-    if (tokenExpiry < currentUnixTimestamp) {
-      getToken();
-    };
-  }
 
   // Set parameters for search with input from form and return fetch request URL
   var setRequestURL = function() {
@@ -139,7 +128,6 @@ $(document).ready(function() {
 
   // Fetch search results from PetFinder API and log to console for viewing full data
   var getPetResults = function() {
-    checkTokenExpiration();
     $("#locationError").text("");
 
     fetch(setRequestURL(), setPetRequestOptions())
