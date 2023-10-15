@@ -13,14 +13,13 @@ $(document).ready(function() {
 
   // Retrieve PetFinder API Token and set interval to retrieve another when expired
   var getToken = function() {
-    fetch(petTokenURL, petTokenOptions)
+    var fetchToken = fetch(petTokenURL, petTokenOptions)
       .then(function(response) {
         return response.json();
       })
       .then(function(data) {
         var expireTime = data.expires_in;
         localStorage.setItem("accessToken", data.access_token);
-        setTimeout(getToken(), expireTime * 1000);
       })
   }
   
