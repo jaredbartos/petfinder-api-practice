@@ -20,10 +20,16 @@ $(document).ready(function() {
       .then(function(data) {
         var expireTime = data.expires_in;
         localStorage.setItem("accessToken", data.access_token);
+        return expireTime
+      })
+
+      fetchToken.then(function(expireTime) {
+        setTimeout(getToken, expireTime * 1000);
       })
   }
   
   getToken();
+
 
   // Set options for fetch request and return value for it
   var setPetRequestOptions = function() {
