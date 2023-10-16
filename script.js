@@ -19,7 +19,7 @@ $(document).ready(function() {
       })
       .then(function(data) {
         var expireTime = data.expires_in;
-        localStorage.setItem("accessToken", data.access_token);
+        $("body").attr("data-token", data.access_token);
         return expireTime
       })
 
@@ -32,7 +32,7 @@ $(document).ready(function() {
 
   // Set options for fetch request and return value for it
   var setPetRequestOptions = function() {
-    var accessToken = localStorage.getItem("accessToken");
+    var accessToken = $("body").attr("data-token");
     var petRequestOptions = {
         method: "GET",
         headers: {
